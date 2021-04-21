@@ -18,11 +18,11 @@ public class RegisterService {
     @Autowired
     private UserRepository userRepository;
 
-    public void recharge(RechargeRegisterRequest rechargeRegisterRequest) {
+    public Register recharge(RechargeRegisterRequest rechargeRegisterRequest) {
         userRepository.findById(rechargeRegisterRequest.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Register register = registerRepository.findById(rechargeRegisterRequest.getRegisterId()).orElseThrow(() -> new EntityNotFoundException("Register not found"));
         register.setBalance(register.getBalance() + rechargeRegisterRequest.getAmount());
 
-        registerRepository.save(register);
+        return registerRepository.save(register);
     }
 }
