@@ -2,7 +2,9 @@ package com.homebudget;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+@EntityScan("com.homebudget.model")
 @SpringBootApplication
 public class HomebudgetApplication {
 
