@@ -57,7 +57,6 @@ public class RegisterServiceTest {
 
         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(java.util.Optional.of(user));
         Mockito.when(registerRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(registerRepository.save(Mockito.any())).thenReturn(register);
 
         Assertions.assertThatThrownBy(() -> registerService.recharge(request)).isInstanceOf(EntityNotFoundException.class);
     }
