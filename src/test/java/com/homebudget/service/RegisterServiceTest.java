@@ -37,8 +37,8 @@ public class RegisterServiceTest {
         User user = new User();
         user.setUsername("John");
 
-        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(java.util.Optional.of(user));
-        Mockito.when(registerRepository.findById(Mockito.any())).thenReturn(java.util.Optional.of(register));
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(user));
+        Mockito.when(registerRepository.findById(Mockito.any())).thenReturn(Optional.of(register));
         Mockito.when(registerRepository.save(Mockito.any())).thenReturn(register);
 
         Register returnedRegister = registerService.recharge(request);
@@ -55,7 +55,7 @@ public class RegisterServiceTest {
         User user = new User();
         user.setUsername("John");
 
-        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(java.util.Optional.of(user));
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(user));
         Mockito.when(registerRepository.findById(Mockito.any())).thenReturn(Optional.empty());
 
         Assertions.assertThatThrownBy(() -> registerService.recharge(request)).isInstanceOf(EntityNotFoundException.class);

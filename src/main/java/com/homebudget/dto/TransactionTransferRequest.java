@@ -10,6 +10,16 @@ public class TransactionTransferRequest {
 
     private float amount;
 
+    public TransactionTransferRequest() {
+    }
+
+    public TransactionTransferRequest(long userId, long sourceRegisterId, long destinationRegisterId, float amount) {
+        this.userId = userId;
+        this.sourceRegisterId = sourceRegisterId;
+        this.destinationRegisterId = destinationRegisterId;
+        this.amount = amount;
+    }
+
     public long getUserId() {
         return userId;
     }
