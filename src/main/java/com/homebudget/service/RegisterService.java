@@ -20,15 +20,17 @@ public class RegisterService {
     private UserRepository userRepository;
 
     public Register recharge(RechargeRegisterRequest rechargeRegisterRequest) {
-        userRepository.findById(rechargeRegisterRequest.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        Register register = registerRepository.findById(rechargeRegisterRequest.getRegisterId()).orElseThrow(() -> new EntityNotFoundException("Register not found"));
+        userRepository.findById(rechargeRegisterRequest.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id: %s not found", rechargeRegisterRequest.getUserId())));
+        Register register = registerRepository.findById(rechargeRegisterRequest.getRegisterId())
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Register with id: %s not found", rechargeRegisterRequest.getRegisterId())));
         register.setBalance(register.getBalance() + rechargeRegisterRequest.getAmount());
 
         return registerRepository.save(register);
     }
 
     public RegisterSummaryResponse getSummary(Long userId) {
-        userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format("User with id: %s not found", userId)));
         RegisterSummaryResponse response = new RegisterSummaryResponse();
         response.setListOfRegisters(registerRepository.findAllByUserId(userId));
         return response;

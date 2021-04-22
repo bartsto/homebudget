@@ -8,6 +8,8 @@ import com.homebudget.model.User;
 import com.homebudget.repository.RegisterRepository;
 import com.homebudget.repository.TransactionRepository;
 import com.homebudget.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ import java.util.List;
 
 @Service
 public class TransactionService {
+
+    Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
     @Autowired
     private RegisterRepository registerRepository;
@@ -51,9 +55,11 @@ public class TransactionService {
 
         sourceRegister.setBalance(sourceRegister.getBalance() - transaction.getAmount());
         registerRepository.save(sourceRegister);
+        logger.info("Source register balance decreased");
 
         destinationRegister.setBalance(destinationRegister.getBalance() + transaction.getAmount());
         registerRepository.save(destinationRegister);
+        logger.info("Destination register balance increased");
 
         transaction.setStatus(TransactionStatus.SUCCESS);
 
@@ -62,7 +68,7 @@ public class TransactionService {
 
     private void verifyUserPreConditions(TransactionTransferRequest transactionTransferRequest) {
         User user = userRepository.findById(transactionTransferRequest.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id: %s not found", transactionTransferRequest.getUserId())));
 
         if(!userContainsTransactionRegisters(user.getRegisters(), transactionTransferRequest.getSourceRegisterId())) {
             throw new UnsupportedOperationException("Source register doesn't exist for this user");
