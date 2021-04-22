@@ -2,6 +2,7 @@ package com.homebudget.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.homebudget.dto.RechargeRegisterRequest;
+import com.homebudget.dto.RegisterSummaryResponse;
 import com.homebudget.model.Register;
 import com.homebudget.service.RegisterService;
 import org.junit.Test;
@@ -53,6 +54,26 @@ public class RegisterControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/register/recharge")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void summaryShouldReturnOk() throws Exception {
+        RegisterSummaryResponse response = new RegisterSummaryResponse();
+
+        Mockito.when(registerService.getSummary(Mockito.any())).thenReturn(response);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/register/summary/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    public void summaryShouldReturnNotFound() throws Exception {
+        Mockito.when(registerService.getSummary(Mockito.any())).thenThrow(new EntityNotFoundException());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/register/summary/1")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
