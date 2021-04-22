@@ -1,13 +1,12 @@
 package com.homebudget.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.homebudget.views.Views;
 import com.homebudget.dto.RechargeRegisterRequest;
 import com.homebudget.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/register")
@@ -20,5 +19,11 @@ public class RegisterController {
     public ResponseEntity recharge(@RequestBody RechargeRegisterRequest rechargeRegisterRequest) {
         registerService.recharge(rechargeRegisterRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/summary/{userId}")
+    @JsonView(Views.Summary.class)
+    public ResponseEntity summary(@PathVariable Long userId) {
+        return ResponseEntity.ok(registerService.getSummary(userId));
     }
 }

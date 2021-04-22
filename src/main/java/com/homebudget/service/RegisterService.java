@@ -1,6 +1,7 @@
 package com.homebudget.service;
 
 import com.homebudget.dto.RechargeRegisterRequest;
+import com.homebudget.dto.RegisterSummaryResponse;
 import com.homebudget.model.Register;
 import com.homebudget.repository.RegisterRepository;
 import com.homebudget.repository.UserRepository;
@@ -24,5 +25,12 @@ public class RegisterService {
         register.setBalance(register.getBalance() + rechargeRegisterRequest.getAmount());
 
         return registerRepository.save(register);
+    }
+
+    public RegisterSummaryResponse getSummary(Long userId) {
+        userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        RegisterSummaryResponse response = new RegisterSummaryResponse();
+        response.setListOfRegisters(registerRepository.findAllByUserId(userId));
+        return response;
     }
 }

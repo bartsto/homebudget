@@ -2,6 +2,8 @@ package com.homebudget.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.homebudget.views.Views;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,25 +15,32 @@ public class Register {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Views.Internal.class)
     private long id;
 
+    @JsonView(Views.Summary.class)
     private String name;
 
+    @JsonView(Views.Summary.class)
     private float balance;
 
+    @JsonView(Views.Internal.class)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @JsonView(Views.Internal.class)
     private User user;
 
     @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "source")
+    @JsonView(Views.Internal.class)
     private List<Transaction> outgoingTransactions;
 
     @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "destination")
+    @JsonView(Views.Internal.class)
     private List<Transaction> incomingTransactions;
 
     public Register() {
