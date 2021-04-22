@@ -9,10 +9,10 @@ and insert initial data. You can find it ```application.properties``` file:
 
 After first run, if you don't want to lose data, please change ```create``` to ```none```.
 
-#####1st solution (IDE)
+##### 1st solution (IDE)
 You can run it from your IDE by starting main function. 
 
-#####2nd solution (terminal)
+##### 2nd solution (terminal)
 In the root folder of the project type in 
 ``mvn spring-boot:run`` 
 
